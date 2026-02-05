@@ -9,10 +9,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
-COPY requirements.txt .
+COPY requirements.deploy.txt .
+
 
 # Install Python deps (NO CACHE, NO OPTIONAL DEPS)
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.deploy.txt
 
 # Copy app code
 COPY . .
