@@ -1,25 +1,54 @@
+import os
+import requests
 
-from transformers import AutoTokenizer, AutoModelForMaskedLM, pipeline
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
 
-# Global cache for model, tokenizer, and pipeline
-_pubmedbert_tokenizer = None
-_pubmedbert_model = None
-_pubmedbert_fill_mask = None
+MODEL_ID = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext"
+HF_API_URL = f"https://api-inference.huggingface.co/models/{MODEL_ID}"
 
-def get_pubmedbert_pipeline():
-    global _pubmedbert_tokenizer, _pubmedbert_model, _pubmedbert_fill_mask
-    if _pubmedbert_tokenizer is None or _pubmedbert_model is None or _pubmedbert_fill_mask is None:
-        _pubmedbert_tokenizer = AutoTokenizer.from_pretrained("microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
-        _pubmedbert_model = AutoModelForMaskedLM.from_pretrained("microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
-        _pubmedbert_fill_mask = pipeline("fill-mask", model=_pubmedbert_model, tokenizer=_pubmedbert_tokenizer)
-    return _pubmedbert_fill_mask
+HEADERS = {
+    "Authorization": f"Bearer {HF_API_TOKEN}",
+    "Content-Type": "application/json"
+}
 
 def pubmedbert_summarize(text):
     """
-    Use PubMedBERT to extract biomedical knowledge or summarize a protein/gene/compound.
-    Caches model and tokenizer for fast repeated calls.
+    Uses Hugging Face Inference API (no local torch).
+    Predicts masked token completion using PubMedBERT.
     """
-    fill_mask = get_pubmedbert_pipeline()
+
+    if not HF_API_TOKEN:
+        return ["HF_API_TOKEN not set. Cannot run PubMedBERT."]
+
     prompt = f"{text} is associated with [MASK]."
-    results = fill_mask(prompt)
-    return [f"{r['sequence']} (score: {r['score']:.3f})" for r in results]
+
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "top_k": 5
+        }
+    }
+
+    try:
+        response = requests.post(
+            HF_API_URL,
+            headers=HEADERS,
+            json=payload,
+            timeout=30
+        )
+
+        if response.status_code != 200:
+            return [f"HF API error: {response.status_code} - {response.text}"]
+
+        results = response.json()
+
+        formatted = []
+        for r in results:
+            token = r.get("token_str", "").strip()
+            score = r.get("score", 0)
+            formatted.append(f"{prompt.replace('[MASK]', token)} (score: {score:.3f})")
+
+        return formatted
+
+    except Exception as e:
+        return [f"HF request failed: {str(e)}"]
