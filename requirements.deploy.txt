@@ -8,3 +8,4 @@ pandas
 networkx
 scikit-learn
 transformers
+torch
