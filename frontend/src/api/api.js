@@ -1,17 +1,12 @@
-const API_URL = "http://127.0.0.1:8000";
+// ================================
+// API BASE URL (ENV-BASED)
+// ================================
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 // ================= DISEASE MONITOR =================
 export const runDiseaseMonitor = async (disease) => {
   const res = await fetch(
     `${API_URL}/disease_monitor?disease=${encodeURIComponent(disease)}`
-  );
-  return res.json();
-};
-
-// ================= RAG EXPLAIN =================
-export const runRAG = async (gene, disease) => {
-  const res = await fetch(
-    `${API_URL}/rag_explain?gene=${encodeURIComponent(gene)}&disease=${encodeURIComponent(disease)}`
   );
   return res.json();
 };
@@ -31,7 +26,7 @@ export const fetchHistory = async () => {
 };
 
 /* ==================================================
-   🔽 NEW ENGINE APIs (ADD-ONLY)
+   ENGINE APIs
    ================================================== */
 
 // ================= ALPHAFOLD =================
@@ -65,7 +60,7 @@ export const runPathways = async (genes) => {
 // ================= CLINICAL TRIALS =================
 export const fetchClinicalTrials = async (query) => {
   const res = await fetch(
-    `${API_URL}/clinical_trials/${encodeURIComponent(query)}`
+    `${API_URL}/clinical_trials?query=${encodeURIComponent(query)}`
   );
   return res.json();
 };
