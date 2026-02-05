@@ -40,14 +40,14 @@ from tools.pathway_enrichment import run_pathway_enrichment
 app = FastAPI(title="Drug Discovery AI Backend")
 
 # =========================
-# CORS (🔧 ADDED VERCEL SUPPORT ONLY)
+# CORS (VERCEL + LOCAL)
 # =========================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://*.vercel.app",   # ✅ ADDED (frontend on Vercel)
+        "https://*.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -60,12 +60,16 @@ validation_agent = ValidationAgent()
 approval_agent = ApprovalAgent()
 
 # =========================
-# MONGO SAFE SERIALIZER
+# MONGO SAFE SERIALIZER (🔥 FIXED)
 # =========================
 def mongo_safe(obj):
-    import torch
-    if isinstance(obj, torch.Tensor):
-        return obj.detach().cpu().tolist()
+    try:
+        import torch
+        if isinstance(obj, torch.Tensor):
+            return obj.detach().cpu().tolist()
+    except ImportError:
+        pass  # torch not installed (expected in Railway)
+
     if isinstance(obj, dict):
         return {k: mongo_safe(v) for k, v in obj.items()}
     if isinstance(obj, list):
@@ -75,7 +79,7 @@ def mongo_safe(obj):
     return obj
 
 # =========================
-# STARTUP (LOGIC UNCHANGED)
+# STARTUP
 # =========================
 @app.on_event("startup")
 def startup_db():
@@ -86,8 +90,8 @@ def startup_db():
     try:
         mongo_client = MongoClient(
             MONGODB_URI,
-            serverSelectionTimeoutMS=5000,  # ✅ ADDED (safe timeout)
-            connectTimeoutMS=5000           # ✅ ADDED (safe timeout)
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000
         )
         mongo_client.admin.command("ping")
         history_collection = mongo_client["drug_discovery"]["history"]
@@ -97,7 +101,7 @@ def startup_db():
         history_collection = None
 
 # =========================
-# FULL WORKFLOW (DO NOT TOUCH)
+# FULL WORKFLOW
 # =========================
 @app.get("/full_workflow")
 def full_workflow(query: str):
@@ -135,17 +139,10 @@ def full_workflow(query: str):
         }
 
 # =========================
-# DISEASE MONITOR (NO RAG)
+# DISEASE MONITOR
 # =========================
 @app.get("/disease_monitor")
 def disease_monitor(disease: str):
-    """
-    Disease monitoring with:
-    - GNN-ranked genes
-    - Evidence timeline (publication trend)
-    - NO RAG explanations
-    """
-
     monitor = run_disease_monitor(disease)
 
     genes = monitor.get("genes", [])
@@ -165,9 +162,8 @@ def disease_monitor(disease: str):
     edges = []
 
     for g in ranked_genes:
-        gene = g["gene"]
-        nodes.append({"id": gene, "type": "gene"})
-        edges.append({"source": disease, "target": gene})
+        nodes.append({"id": g["gene"], "type": "gene"})
+        edges.append({"source": disease, "target": g["gene"]})
 
     response = {
         "ranked_targets": [
@@ -209,9 +205,9 @@ def get_history(limit: int = 20):
 
     return results
 
-# ============================================================
-# ENGINE ENDPOINTS (UNCHANGED)
-# ============================================================
+# =========================
+# ENGINE ENDPOINTS
+# =========================
 @app.get("/alphafold/{gene}")
 def alphafold_structure(gene: str):
     af = AlphaFoldTool()
