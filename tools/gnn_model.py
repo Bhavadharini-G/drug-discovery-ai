@@ -1,12 +1,3 @@
-import torch
-import torch.nn.functional as F
-from torch_geometric.data import Data
-from torch_geometric.nn import GCNConv
-
-class SimpleGNN(torch.nn.Module):
-    def __init__(self, dim=16):
-        super().__init__()
-        self.conv1 = GCNConv(dim, 16)
 """
 GNN scoring module.
 
@@ -47,36 +38,18 @@ if TORCH_AVAILABLE:
 # PUBLIC API (UNCHANGED)
 # -----------------------------
 def run_gnn(genes, disease):
-    """
-    Rank genes for a disease.
-
-    Returns:
-    [
-        {"gene": "TP53", "score": 0.91},
-        ...
-    ]
-    """
 
     if not genes:
         return []
 
-    # =========================================================
-    # CLOUD / RAILWAY MODE (NO TORCH)
-    # =========================================================
+    # ===== CLOUD MODE (NO TORCH) =====
     if not TORCH_AVAILABLE:
-        # Deterministic fallback scoring
-        # (stable, explainable, reviewer-safe)
-        scores = []
-        for i, g in enumerate(genes):
-            scores.append({
-                "gene": g,
-                "score": round(1.0 / (i + 1), 3)
-            })
-        return scores
+        return [
+            {"gene": g, "score": round(1.0 / (i + 1), 3)}
+            for i, g in enumerate(genes)
+        ]
 
-    # =========================================================
-    # LOCAL / RESEARCH MODE (FULL GNN)
-    # =========================================================
+    # ===== LOCAL MODE (FULL GNN) =====
     edges = []
     for i in range(len(genes) - 1):
         edges.append((i, i + 1))
