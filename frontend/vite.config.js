@@ -3,7 +3,22 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+
+  root: ".", // frontend is the root for Vite
+
   build: {
-    chunkSizeWarningLimit: 1500, // 🔧 increased from default 500 KB
+    outDir: "dist",
+    emptyOutDir: true,
+    chunkSizeWarningLimit: 2000,
+  },
+
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
+
+  css: {
+    devSourcemap: true,
   },
 });
