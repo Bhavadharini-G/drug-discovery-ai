@@ -237,6 +237,6 @@ def clinical_trials(query: str):
         "trials": get_trials_for_query(query)
     }
 
-@app.get(".")
+@app.get("/")
 def root():
     return {"status": "Drug Discovery AI backend running"}
