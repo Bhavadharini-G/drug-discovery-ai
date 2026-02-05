@@ -13,8 +13,7 @@ COPY requirements.deploy.txt .
 
 
 # Install Python deps (NO CACHE, NO OPTIONAL DEPS)
-RUN pip install --upgrade pip && pip install --no-cache-dir --no-deps -r requirements.deploy.txt
-
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.deploy.txt
 
 # Copy app code
 COPY . .
