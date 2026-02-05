@@ -1,0 +1,256 @@
+/* ================= GLOBAL ================= */
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(
+    135deg,
+    #e7edf5,
+    #eef3f9,
+    #e6ecf4
+  );
+  color: #1f2937;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 12px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #475569;
+  margin: 6px 0 18px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.header-status {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  align-items: center;
+}
+
+/* ================= BUTTONS ================= */
+
+button {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #6366f1, #22c55e);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* ================= PAGE ================= */
+
+.page {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+/* ================= CARDS ================= */
+
+.section-card {
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #f1f5f9
+  );
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.center {
+  text-align: center;
+}
+
+/* ================= INPUTS ================= */
+
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #cbd5f5;
+  font-size: 0.95rem;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+/* ================= RESULTS ================= */
+
+.result-box {
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #eef2f7
+  );
+  border-radius: 16px;
+  padding: 28px;
+  margin-top: 28px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.1);
+}
+
+/* ================= TABLE ================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+}
+
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+th {
+  background: #eef2ff;
+}
+
+/* ================= RAG ================= */
+
+.rag-card {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #f0fdf4,
+    #ecfeff
+  );
+}
+
+/* ============================================================
+   ✅ LOGIN / LANDING PAGE (NEW, SEPARATE ENTRY PAGE)
+============================================================ */
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f8fafc
+  );
+  padding: 48px 44px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+.login-card h1 {
+  margin: 0;
+  font-size: 2.1rem;
+}
+
+.login-card .subtitle {
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+.login-btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  min-width: 260px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+}
+/* ================= LAYOUT ================= */
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  padding: 24px;
+  background: #f8fafc;
+  border-right: 1px solid #e5e7eb;
+}
+
+.sidebar-title {
+  margin-bottom: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* ================= MAIN ================= */
+
+.main-content {
+  flex: 1;
+}
+
+/* ================= LANDING ================= */
+
+.landing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
