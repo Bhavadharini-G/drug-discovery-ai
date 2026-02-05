@@ -9,7 +9,7 @@ from pymongo import MongoClient
 # ENV
 # =========================
 load_dotenv()
-MONGODB_URI = os.getenv("MONGODB_URI")
+MONGODB_URI = os.getenv("MONGODB_URI")  # ✅ unchanged
 
 mongo_client = None
 history_collection = None
@@ -40,13 +40,14 @@ from tools.pathway_enrichment import run_pathway_enrichment
 app = FastAPI(title="Drug Discovery AI Backend")
 
 # =========================
-# CORS
+# CORS (🔧 ADDED VERCEL SUPPORT ONLY)
 # =========================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173"
+        "http://127.0.0.1:5173",
+        "https://*.vercel.app",   # ✅ ADDED (frontend on Vercel)
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -74,7 +75,7 @@ def mongo_safe(obj):
     return obj
 
 # =========================
-# STARTUP
+# STARTUP (LOGIC UNCHANGED)
 # =========================
 @app.on_event("startup")
 def startup_db():
@@ -83,7 +84,11 @@ def startup_db():
         print("❌ MONGODB_URI not set")
         return
     try:
-        mongo_client = MongoClient(MONGODB_URI)
+        mongo_client = MongoClient(
+            MONGODB_URI,
+            serverSelectionTimeoutMS=5000,  # ✅ ADDED (safe timeout)
+            connectTimeoutMS=5000           # ✅ ADDED (safe timeout)
+        )
         mongo_client.admin.command("ping")
         history_collection = mongo_client["drug_discovery"]["history"]
         print("✅ MongoDB connected")
@@ -174,7 +179,7 @@ def disease_monitor(disease: str):
             "edges": edges
         },
         "evidence_timeline": evidence_timeline,
-        "rag_ready": False   # 🔥 Explicitly disabled
+        "rag_ready": False
     }
 
     if history_collection is not None:
@@ -207,7 +212,6 @@ def get_history(limit: int = 20):
 # ============================================================
 # ENGINE ENDPOINTS (UNCHANGED)
 # ============================================================
-
 @app.get("/alphafold/{gene}")
 def alphafold_structure(gene: str):
     af = AlphaFoldTool()
@@ -232,6 +236,7 @@ def clinical_trials(query: str):
         "query": query,
         "trials": get_trials_for_query(query)
     }
-@app.get("/")
+
+@app.get(".")
 def root():
     return {"status": "Drug Discovery AI backend running"}
