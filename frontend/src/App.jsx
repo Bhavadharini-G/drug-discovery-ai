@@ -3,6 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import DrugDiscovery from "./components/DrugDiscovery";
 import DiseaseMonitor from "./components/DiseaseMonitor";
 import Sidebar from "./components/Sidebar";
+import "./styles/app.css";
 
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
