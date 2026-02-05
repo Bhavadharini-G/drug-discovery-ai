@@ -5,7 +5,7 @@ import DiseaseMonitor from "./components/DiseaseMonitor";
 import Sidebar from "./components/Sidebar";
 import "./styles/app.css";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function App() {
   const [page, setPage] = useState(null);
@@ -35,7 +35,6 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* ========== SIDEBAR ========== */}
       <Sidebar
         setTab={(tab) => {
           if (tab === "admin") {
@@ -49,9 +48,7 @@ export default function App() {
         activeTab={showAdmin ? "admin" : page}
       />
 
-      {/* ========== MAIN CONTENT ========== */}
       <main className="main-content">
-        {/* ===== SINGLE HEADER (CENTER ONLY) ===== */}
         <div className="header">
           <h1>🧬 Drug Discovery AI</h1>
           <p className="subtitle">
@@ -65,7 +62,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* ===== ADMIN HISTORY (CENTER) ===== */}
         {showAdmin && (
           <div className="page">
             <div className="result-box">
@@ -85,7 +81,6 @@ export default function App() {
           </div>
         )}
 
-        {/* ===== ROUTING ===== */}
         {!showAdmin && !page && <LandingPage onSelect={setPage} />}
         {!showAdmin && page === "discovery" && <DrugDiscovery />}
         {!showAdmin && page === "monitor" && <DiseaseMonitor />}
