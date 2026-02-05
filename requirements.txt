@@ -2,16 +2,8 @@ fastapi
 uvicorn
 python-dotenv
 pymongo
-
-langchain
-crewai
-
 requests
 numpy
 pandas
 networkx
 scikit-learn
-
-torch
-transformers
-huggingface-hub
