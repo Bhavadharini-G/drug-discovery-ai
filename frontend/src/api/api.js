@@ -1,7 +1,7 @@
 // ================================
 // API BASE URL (ENV-BASED)
 // ================================
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 // ================= DISEASE MONITOR =================
 export const runDiseaseMonitor = async (disease) => {
