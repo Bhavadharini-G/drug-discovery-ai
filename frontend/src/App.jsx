@@ -5,14 +5,22 @@ import DiseaseMonitor from "./components/DiseaseMonitor";
 import Sidebar from "./components/Sidebar";
 import "./styles/App.css";
 
-
+// ================================
+// ENV
+// ================================
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const ENABLE_LOGIN = import.meta.env.VITE_ENABLE_LOGIN === "true";
 
 export default function App() {
   const [page, setPage] = useState(null);
   const [showAdmin, setShowAdmin] = useState(false);
   const [history, setHistory] = useState([]);
   const [mongoStatus, setMongoStatus] = useState("checking");
+
+  // ================= AUTH =================
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("auth") === "true"
+  );
 
   // ================= ADMIN HISTORY =================
   useEffect(() => {
@@ -34,6 +42,19 @@ export default function App() {
       .catch(() => setMongoStatus("disconnected"));
   }, []);
 
+  // ================= LOGIN GATE =================
+  if (ENABLE_LOGIN && !isAuthenticated) {
+    return (
+      <LandingPage
+        onLoginSuccess={() => {
+          localStorage.setItem("auth", "true");
+          setIsAuthenticated(true);
+        }}
+      />
+    );
+  }
+
+  // ================= MAIN APP =================
   return (
     <div className="app-container">
       <Sidebar
