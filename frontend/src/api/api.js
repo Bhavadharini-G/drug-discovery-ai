@@ -3,16 +3,11 @@
 // ================================
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-if (!API_BASE) {
-  console.error("❌ VITE_API_BASE_URL is not defined");
-}
-
 // ================= DISEASE MONITOR =================
 export const runDiseaseMonitor = async (disease) => {
   const res = await fetch(
     `${API_BASE}/disease_monitor?disease=${encodeURIComponent(disease)}`
   );
-
   if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
@@ -22,26 +17,27 @@ export const runFullWorkflow = async (query) => {
   const res = await fetch(
     `${API_BASE}/full_workflow?query=${encodeURIComponent(query)}`
   );
-
   if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
 
 // ================= ADMIN HISTORY =================
-export const fetchHistory = async (limit = 20) => {
-  const res = await fetch(`${API_BASE}/admin/history?limit=${limit}`);
-
-  if (!res.ok) throw new Error("Admin history fetch failed");
+export const fetchHistory = async () => {
+  const res = await fetch(`${API_BASE}/admin/history`);
+  if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
+
+/* ==================================================
+   ENGINE APIs
+   ================================================== */
 
 // ================= ALPHAFOLD =================
 export const fetchAlphaFold = async (gene) => {
   const res = await fetch(
     `${API_BASE}/alphafold/${encodeURIComponent(gene)}`
   );
-
-  if (!res.ok) throw new Error("AlphaFold error");
+  if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
 
@@ -52,8 +48,7 @@ export const runADMET = async (compound) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ compound }),
   });
-
-  if (!res.ok) throw new Error("ADMET error");
+  if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
 
@@ -64,8 +59,7 @@ export const runPathways = async (genes) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ genes }),
   });
-
-  if (!res.ok) throw new Error("Pathway enrichment error");
+  if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
 };
 
@@ -74,13 +68,6 @@ export const fetchClinicalTrials = async (query) => {
   const res = await fetch(
     `${API_BASE}/clinical_trials?query=${encodeURIComponent(query)}`
   );
-
-  if (!res.ok) throw new Error("Clinical trials error");
+  if (!res.ok) throw new Error("FastAPI error — check backend");
   return res.json();
-};
-
-// ================= BACKEND HEALTH =================
-export const checkBackendHealth = async () => {
-  const res = await fetch(`${API_BASE}/admin/history?limit=1`);
-  return res.ok;
 };
