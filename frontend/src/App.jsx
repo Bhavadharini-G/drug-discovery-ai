@@ -57,6 +57,7 @@ export default function App() {
   // ================= MAIN APP =================
   return (
     <div className="app-container">
+      {/* ===== SIDEBAR ===== */}
       <Sidebar
         setTab={(tab) => {
           if (tab === "admin") {
@@ -70,6 +71,7 @@ export default function App() {
         activeTab={showAdmin ? "admin" : page}
       />
 
+      {/* ===== MAIN CONTENT ===== */}
       <main className="main-content">
         <div className="header">
           <h1>🧬 Drug Discovery AI</h1>
@@ -81,9 +83,21 @@ export default function App() {
             {mongoStatus === "connected" && "✅ MongoDB connected"}
             {mongoStatus === "checking" && "⏳ Checking MongoDB"}
             {mongoStatus === "disconnected" && "❌ MongoDB not connected"}
+
+            {/* ===== LOGOUT ===== */}
+            <button
+              style={{ marginLeft: "16px" }}
+              onClick={() => {
+                localStorage.removeItem("auth");
+                window.location.reload();
+              }}
+            >
+              🚪 Logout
+            </button>
           </div>
         </div>
 
+        {/* ===== ADMIN HISTORY ===== */}
         {showAdmin && (
           <div className="page">
             <div className="result-box">
@@ -103,6 +117,7 @@ export default function App() {
           </div>
         )}
 
+        {/* ===== ROUTES ===== */}
         {!showAdmin && !page && <LandingPage onSelect={setPage} />}
         {!showAdmin && page === "discovery" && <DrugDiscovery />}
         {!showAdmin && page === "monitor" && <DiseaseMonitor />}
