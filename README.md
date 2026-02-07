@@ -112,9 +112,45 @@ Frontend:
 
 ---
 
-## 🧬 Molecular Docking Procedure (End-to-End)
+## 🧬 Molecular Docking 
 
 This project includes a complete structure-based molecular docking pipeline using AutoDock Vina and PyMOL to validate AI-prioritized drug–target interactions.
+
+## 🧪 Tools Used for Molecular Docking
+
+The structure-based molecular docking component of this project utilizes the following tools to ensure accurate preparation, execution, and visualization of protein–ligand interactions:
+
+### 🔹 AutoDockTools (ADT)
+- Used for **protein and ligand preparation**
+- Removal of water molecules
+- Addition of polar hydrogens and charges
+- Conversion of structures to **PDBQT** format
+- Grid box definition and extraction of docking parameters
+
+### 🔹 AutoDock Vina
+- Used for **molecular docking simulation**
+- Efficient scoring and pose generation
+- Provides binding affinity values (ΔG in kcal/mol)
+- Supports multiple docking modes for pose comparison
+
+### 🔹 Open Babel
+- Used for **ligand format conversion**
+- Conversion from SDF/MOL formats to PDB/PDBQT
+- Generation of 3D coordinates and explicit hydrogens
+
+### 🔹 PyMOL
+- Used for **visualization and analysis**
+- Visualization of docked protein–ligand complexes
+- Splitting and inspection of multiple docking poses
+- Generation of publication-quality figures
+
+### 🔹 AlphaFold / PDB
+- Source of **protein 3D structures**
+- Used as receptor input for docking studies
+
+Together, these tools form a complete and reproducible molecular docking workflow that complements the AI-driven drug discovery pipeline with structure-based validation.
+
+## 🧬 Molecular Docking Procedure (End-to-End)
 
 Docking folder structure:
 Docking_files/
@@ -141,6 +177,8 @@ Grid box definition:
 - Grid center and size reused for Vina docking  
 
 Vina configuration (config.txt):
+- Fixed config.txt requirements
+
 receptor = protein/protein.pdbqt  
 ligand = Ligand/ligand.pdbqt  
 center_x = X  
@@ -154,7 +192,9 @@ num_modes = 9
 energy_range = 3  
 
 Run docking:
-- vina.exe --config config.txt --out out.pdbqt  
+1. vina.exe --config config.txt --out out.pdbqt
+2. vina.exe --config config.txt --out out.pdbqt > vina log 
+
 
 Docking results:
 - Binding affinity (ΔG, kcal/mol) printed in terminal  
@@ -173,3 +213,4 @@ Visualization in PyMOL:
 ## 📌 Summary
 
 An end-to-end AI-powered biomedical intelligence platform integrating literature-driven drug discovery, graph-based disease monitoring, multi-signal compound prioritization, and full molecular docking validation, designed for academic research and early-stage drug discovery.
+
