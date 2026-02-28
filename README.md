@@ -27,7 +27,7 @@ This project addresses these challenges by combining literature mining, graph le
 ## 🧪 System Modules
 
 ### Drug Discovery Engine
-- Disease / gene / compound-driven discovery  
+- Disease / gene-driven discovery  
 - PubMed-based literature mining  
 - Target identification and prioritization  
 - AlphaFold protein structure mapping  
@@ -46,7 +46,7 @@ This project addresses these challenges by combining literature mining, graph le
 
 ## ⚙️ Methodology
 
-1. User query ingestion (disease / gene / compound)  
+1. User query ingestion (disease / gene )  
 2. Biomedical literature extraction (PubMed)  
 3. Target identification and filtering  
 4. GNN-based disease–gene scoring  
