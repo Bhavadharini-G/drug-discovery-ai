@@ -2,22 +2,8 @@ import { useState } from "react";
 import { runDiseaseMonitor } from "../api/api";
 import TargetChart from "./TargetChart";
 
-/* ================= DISEASE OPTIONS ================= */
-const DISEASES = [
-  "Alzheimer's disease",
-  "Parkinson's disease",
-  "Amyotrophic lateral sclerosis",
-  "Huntington's disease",
-  "Multiple sclerosis",
-  "Pancreatic cancer",
-  "Breast cancer",
-  "Lung cancer",
-  "Glioblastoma",
-  "Ovarian cancer"
-];
-
 export default function DiseaseMonitor() {
-  const [disease, setDisease] = useState(DISEASES[0]);
+  const [disease, setDisease] = useState("");
   const [targets, setTargets] = useState([]);
   const [timeline, setTimeline] = useState({});
   const [loading, setLoading] = useState(false);
@@ -58,13 +44,14 @@ export default function DiseaseMonitor() {
 
       {/* ================= INPUT ================= */}
       <div className="section-card">
-        <label>Select disease</label>
+        <label>Enter disease name</label>
 
-        <select value={disease} onChange={(e) => setDisease(e.target.value)}>
-          {DISEASES.map((d) => (
-            <option key={d}>{d}</option>
-          ))}
-        </select>
+        <input
+          type="text"
+          placeholder="e.g. Alzheimer's disease"
+          value={disease}
+          onChange={(e) => setDisease(e.target.value)}
+        />
 
         <button onClick={runMonitor}>
           🚀 Run Disease Monitor

@@ -1,25 +1,6 @@
 import { useState } from "react";
 import { runFullWorkflow } from "../api/api";
 
-/* ================= DISEASE OPTIONS ================= */
-const DISEASES = [
-  "Alzheimer's disease",
-  "Parkinson's disease",
-  "Amyotrophic lateral sclerosis (ALS)",
-  "Huntington's disease",
-  "Multiple sclerosis",
-  "Pancreatic cancer",
-  "Breast cancer",
-  "Lung cancer",
-  "Glioblastoma",
-  "Ovarian cancer",
-  "Leukemia",
-  "Prostate cancer",
-  "Diabetes mellitus",
-  "COVID-19",
-  "Rheumatoid arthritis"
-];
-
 export default function DrugDiscovery() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
@@ -61,15 +42,8 @@ export default function DrugDiscovery() {
       <div className="section-card">
         <h2>1️⃣ Disease-Driven Discovery</h2>
 
-        <select value={query} onChange={(e) => setQuery(e.target.value)}>
-          <option value="">(Choose a disease)</option>
-          {DISEASES.map((d) => (
-            <option key={d}>{d}</option>
-          ))}
-        </select>
-
         <input
-          placeholder="Or type disease name"
+          placeholder="Enter disease name (e.g. Alzheimer's disease)"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -90,20 +64,6 @@ export default function DrugDiscovery() {
 
         <button onClick={() => runDiscovery(query)}>
           🎯 Run Target Discovery
-        </button>
-      </div>
-
-      {/* ================= COMPOUND ================= */}
-      <div className="section-card">
-        <h2>3️⃣ Compound-Driven Discovery</h2>
-
-        <input
-          placeholder="Enter compound (e.g. Aspirin)"
-          onChange={(e) => setQuery(e.target.value)}
-        />
-
-        <button onClick={() => runDiscovery(query)}>
-          💊 Run Compound Discovery
         </button>
       </div>
 
