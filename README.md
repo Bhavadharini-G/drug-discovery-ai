@@ -74,7 +74,7 @@ This project addresses these challenges by combining literature mining, graph le
 Backend: FastAPI, Python, MongoDB  
 AI / Bioinformatics: BioBERT, PubMedBERT, AlphaFold, ChEMBL, PubChem, GNN  
 Frontend: React (Vite), Streamlit-like UI  
-Deployment: Backend on Railway, Frontend on Vercel  
+Deployment: Backend on Render, Frontend on Vercel  
 
 ---
 
@@ -193,8 +193,7 @@ energy_range = 3
 
 Run docking:
 1. vina.exe --config config.txt --out out.pdbqt
-2. vina.exe --config config.txt --out out.pdbqt > vina log 
-
+2. vina.exe --config config.txt --out out.pdbqt > vina log  
 
 Docking results:
 - Binding affinity (ΔG, kcal/mol) printed in terminal  
@@ -213,4 +212,3 @@ Visualization in PyMOL:
 ## 📌 Summary
 
 An end-to-end AI-powered biomedical intelligence platform integrating literature-driven drug discovery, graph-based disease monitoring, multi-signal compound prioritization, and full molecular docking validation, designed for academic research and early-stage drug discovery.
-
